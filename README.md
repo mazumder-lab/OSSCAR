@@ -5,10 +5,10 @@ This is the offical repo of the ICML 2024 paper **OSSCAR: One-Shot Structured Pr
 
 ## Requirements: 
 This code has been tested with Python 3.9.6 and the following packages:
-torch 2.0.0
-transformers 4.35.2
-datasets 2.15.0
-numpy 1.24.3
++ torch 2.0.0
++ transformers 4.35.2
++ datasets 2.15.0
++ numpy 1.24.3
 
 ## Datasets and models
 
@@ -27,11 +27,11 @@ We usually use c4 as the training (calibration) data and report perplexity on wi
 
 If you find OSSCAR useful in your research, please consider citing the following paper.
 
-'''
+```
 @article{meng2024osscar,
   title={OSSCAR: One-Shot Structured Pruning in Vision and Language Models with Combinatorial Optimization},
   author={Meng, Xiang and Ibrahim, Shibal and Behdin, Kayhan and Hazimeh, Hussein and Ponomareva, Natalia and Mazumder, Rahul},
   journal={arXiv preprint arXiv:2403.12983},
   year={2024}
 }
-'''
+```
