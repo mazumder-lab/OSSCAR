@@ -44,6 +44,10 @@ def OSSCAR_fastprune(W, XTX, XTY, num_cin, num_sp, update_iter = 1):
     totp, num_cout = W.shape
     ksize = int(totp / num_cin)
     
+    W = W.to(torch.float64)
+    XTX = XTX.to(torch.float64)
+    XTY = XTY.to(torch.float64)
+    
     XTX_inv = torch.linalg.inv(XTX)
     
     
@@ -56,7 +60,7 @@ def OSSCAR_fastprune(W, XTX, XTY, num_cin, num_sp, update_iter = 1):
         XTX_inv[upd_idx,:] = 0
         XTX_inv[:,upd_idx] = 0
     
-    W = XTX_inv@ XTY
+    #W = XTX_inv@ XTY
     
     if int(num_cin-num_sp-num_prune) <= 0:
         upd_it = 0
@@ -109,6 +113,10 @@ def OSSCAR_fastprune(W, XTX, XTY, num_cin, num_sp, update_iter = 1):
     nzi = torch.nonzero(W[:,0], as_tuple=True)[0]
     W_sol[nzi,:] = torch.linalg.inv(XTX[nzi[:,None],nzi])@ XTY[nzi,:]
     
+    W_sol = W_sol.to(Wtype)
+    XTY = XTY.to(Wtype)
+    XTX = XTX.to(Wtype)
+    
     return W_sol, torch.sum( -W_sol * XTY + (1/2) * W_sol * (XTX@W_sol) ) 
 
 
@@ -119,9 +127,9 @@ def OSSCAR_local_search(W, XTX, XTY, num_cin, max_iter = 20, num_swap = 100, swi
     Wtype = W.dtype
     totp, num_cout = W.shape
     
-    #W = W.to(torch.float64)
-    #XTX = XTX.to(torch.float64)
-    #XTY = XTY.to(torch.float64)
+    W = W.to(torch.float64)
+    XTX = XTX.to(torch.float64)
+    XTY = XTY.to(torch.float64)
     
     #num_swap = int(np.ceil(num_cin * switch_ratio))
     lb_swap = int(np.ceil(num_cin * switch_lb))
@@ -261,9 +269,9 @@ def OSSCAR_local_search(W, XTX, XTY, num_cin, max_iter = 20, num_swap = 100, swi
     W = torch.zeros_like(W)
     W[supp_idx,:] = torch.linalg.inv(XTX[supp_idx[:,None],supp_idx]) @ XTY[supp_idx,:]
     
-    #W = W.to(Wtype)
-    #XTY = XTY.to(Wtype)
-    #XTX = XTX.to(Wtype)
+    W = W.to(Wtype)
+    XTY = XTY.to(Wtype)
+    XTX = XTX.to(Wtype)
     
     return W, torch.sum( -W * XTY + (1/2) * W * (XTX@W) ) 
 
